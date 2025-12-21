@@ -39,11 +39,11 @@ steps:
       provider: 'azurerm'
       command: 'plan'
       environmentServiceNameAzureRM: 'ajit123'
-  - task: ManualValidation@1
-    inputs:
-      notifyUsers: 'ajitk661@gmail.com'
-      approvers: 'ajitk661@gmail.com'
-      instructions: 'please check the code'
+#  - task: ManualValidation@1
+#    inputs:
+#      notifyUsers: 'ajitk661@gmail.com'
+#      approvers: 'ajitk661@gmail.com'
+#      instructions: 'please check the code'
   - task: TerraformTask@5
     displayName: terraform apply
     inputs:
