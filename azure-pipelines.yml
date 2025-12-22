@@ -13,6 +13,7 @@ steps:
       cliProjectKey: 'my_app'
       cliProjectName: 'my_application'
       cliSources: '.'
+      # ❌ Don't add sonar.branch.name (Community Edition limitation)
 
   - task: SonarQubeAnalyze@8
     inputs:
