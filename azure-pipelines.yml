@@ -1,6 +1,10 @@
 trigger: none
-pool: Default
+
+pool:
+  name: Default
+
 steps:
+  # --- SonarQube Analysis ---
   - task: SonarQubePrepare@8
     inputs:
       SonarQube: 'sonarqube service connection'
@@ -9,16 +13,18 @@ steps:
       cliProjectKey: 'my_app'
       cliProjectName: 'my_application'
       cliSources: '.'
+
   - task: SonarQubeAnalyze@8
     inputs:
       jdkversion: 'JAVA_HOME_17_X64'
+
   - task: SonarQubePublish@8
     inputs:
       pollingTimeoutSec: '300'
 
-
+  # --- Terraform Workflow ---
   - task: TerraformTask@5
-    displayName: terraform init
+    displayName: 'Terraform Init'
     inputs:
       provider: 'azurerm'
       command: 'init'
@@ -29,23 +35,27 @@ steps:
       backendAzureRmKey: 'tfstate'
 
   - task: TerraformTask@5
-    displayName: terraform validate
+    displayName: 'Terraform Validate'
     inputs:
       provider: 'azurerm'
       command: 'validate'
+
   - task: TerraformTask@5
-    displayName: terraform plan
+    displayName: 'Terraform Plan'
     inputs:
       provider: 'azurerm'
       command: 'plan'
       environmentServiceNameAzureRM: 'ajit123'
-#  - task: ManualValidation@1
-#    inputs:
-#      notifyUsers: 'ajitk661@gmail.com'
-#      approvers: 'ajitk661@gmail.com'
-#      instructions: 'please check the code'
+
+  # Optional manual approval step (uncomment if needed)
+  # - task: ManualValidation@1
+  #   inputs:
+  #     notifyUsers: 'ajitk661@gmail.com'
+  #     approvers: 'ajitk661@gmail.com'
+  #     instructions: 'please check the code'
+
   - task: TerraformTask@5
-    displayName: terraform apply
+    displayName: 'Terraform Apply'
     inputs:
       provider: 'azurerm'
       command: 'apply'
